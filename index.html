@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="{{tagline}} - {{location_area}}" />
+  <title>{{business_name}}</title>
+  <style>
+    /* === RESET & BASE === */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      color: #1a1a1a;
+      background: #fff;
+      font-size: 16px;
+      line-height: 1.6;
+    }
+    img { display: block; max-width: 100%; }
+    a { text-decoration: none; color: inherit; }
+
+    /* === HERO === */
+    .hero {
+      position: relative;
+      min-height: 100svh;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      padding: 2rem 1.25rem;
+      overflow: hidden;
+    }
+    .hero-img {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      z-index: 0;
+    }
+    .hero-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to top, rgba(0,0,0,0.82) 0%, rgba(0,0,0,0.2) 60%, transparent 100%);
+      z-index: 1;
+    }
+    .hero-content {
+      position: relative;
+      z-index: 2;
+      color: #fff;
+      max-width: 480px;
+    }
+    .hero-content h1 {
+      font-size: 2rem;
+      font-weight: 800;
+      line-height: 1.15;
+      margin-bottom: 0.5rem;
+    }
+    .hero-content p {
+      font-size: 1.1rem;
+      opacity: 0.9;
+      margin-bottom: 1.5rem;
+    }
+    .btn-group {
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+    }
+    .btn-wa {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      background: #25D366;
+      color: #fff;
+      font-size: 1.05rem;
+      font-weight: 700;
+      padding: 1rem 1.5rem;
+      border-radius: 12px;
+      box-shadow: 0 4px 16px rgba(37,211,102,0.4);
+    }
+    .btn-call {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      background: transparent;
+      color: #fff;
+      font-size: 1.05rem;
+      font-weight: 700;
+      padding: 1rem 1.5rem;
+      border-radius: 12px;
+      border: 2px solid rgba(255,255,255,0.7);
+    }
+
+    /* === TRUST STRIP === */
+    .trust {
+      display: flex;
+      justify-content: space-around;
+      padding: 1.25rem 1rem;
+      background: #f8f8f8;
+      border-bottom: 1px solid #eee;
+      flex-wrap: wrap;
+      gap: 0.75rem;
+    }
+    .trust-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      font-size: 0.8rem;
+      color: #555;
+      gap: 0.2rem;
+    }
+    .trust-item span:first-child {
+      font-size: 1.3rem;
+    }
+    .trust-item strong {
+      color: #1a1a1a;
+      font-size: 0.85rem;
+    }
+
+    /* === SECTION BASE === */
+    section {
+      padding: 2.5rem 1.25rem;
+      max-width: 600px;
+      margin: 0 auto;
+    }
+    section h2 {
+      font-size: 1.4rem;
+      font-weight: 800;
+      margin-bottom: 1.25rem;
+      color: #1a1a1a;
+    }
+
+    /* === SERVICES === */
+    .services-grid {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+    .service-card {
+      background: #f8f8f8;
+      border-radius: 12px;
+      padding: 1.1rem 1.25rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 1rem;
+    }
+    .service-card-text h3 {
+      font-size: 1rem;
+      font-weight: 700;
+      margin-bottom: 0.2rem;
+    }
+    .service-card-text p {
+      font-size: 0.88rem;
+      color: #555;
+    }
+    .service-price {
+      font-size: 0.9rem;
+      font-weight: 700;
+      color: #25D366;
+      white-space: nowrap;
+    }
+
+    /* === TESTIMONIAL === */
+    .testimonial {
+      background: #f0faf4;
+      border-left: 4px solid #25D366;
+      border-radius: 0 12px 12px 0;
+      padding: 1.25rem 1.25rem;
+    }
+    .testimonial p {
+      font-size: 1rem;
+      font-style: italic;
+      color: #333;
+      margin-bottom: 0.75rem;
+    }
+    .testimonial cite {
+      font-size: 0.85rem;
+      font-weight: 700;
+      color: #555;
+      font-style: normal;
+    }
+
+    /* === LOCATION === */
+    .location-text {
+      font-size: 1rem;
+      color: #444;
+      margin-bottom: 1rem;
+    }
+    .map-wrap {
+      border-radius: 12px;
+      overflow: hidden;
+      line-height: 0;
+    }
+    .map-wrap iframe {
+      width: 100%;
+      height: 220px;
+      border: 0;
+    }
+
+    /* === FINAL CTA === */
+    .cta-block {
+      background: #1a1a1a;
+      color: #fff;
+      text-align: center;
+      padding: 2.5rem 1.25rem;
+    }
+    .cta-block h2 {
+      font-size: 1.5rem;
+      font-weight: 800;
+      margin-bottom: 0.5rem;
+      color: #fff;
+    }
+    .cta-block p {
+      opacity: 0.7;
+      margin-bottom: 1.5rem;
+      font-size: 0.95rem;
+    }
+    .cta-block .btn-group {
+      max-width: 360px;
+      margin: 0 auto 1.5rem;
+    }
+    .hours {
+      font-size: 0.85rem;
+      opacity: 0.6;
+    }
+
+    /* === FOOTER === */
+    footer {
+      text-align: center;
+      padding: 1rem;
+      font-size: 0.75rem;
+      color: #aaa;
+      background: #111;
+    }
+    footer a { color: #aaa; text-decoration: underline; }
+
+    /* === STICKY WHATSAPP === */
+    .sticky-wa {
+      position: fixed;
+      bottom: 1.5rem;
+      right: 1.25rem;
+      z-index: 999;
+      background: #25D366;
+      color: #fff;
+      width: 58px;
+      height: 58px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 4px 20px rgba(37,211,102,0.5);
+      font-size: 1.75rem;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- HERO -->
+  <div class="hero">
+    <img class="hero-img" src="{{hero_image_url}}" alt="{{business_name}}" fetchpriority="high" />
+    <div class="hero-overlay"></div>
+    <div class="hero-content">
+      <h1>{{business_name}}</h1>
+      <p>{{tagline}}</p>
+      <div class="btn-group">
+        <a class="btn-wa" href="https://wa.me/{{whatsapp_number}}?text=Hi%2C%20I%20found%20your%20website%20and%20I%27d%20like%20to%20book%20a%20service.">
+          💬 WhatsApp us now
+        </a>
+        <a class="btn-call" href="tel:{{phone_number}}">
+          📞 Tap to call
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <!-- TRUST STRIP -->
+  <div class="trust">
+    <div class="trust-item"><span>⭐</span><strong>5-Star Rated</strong></div>
+    <div class="trust-item"><span>📍</span><strong>{{location_area}}</strong></div>
+    <div class="trust-item"><span>⚡</span><strong>Fast Response</strong></div>
+    <div class="trust-item"><span>✅</span><strong>Trusted & Reliable</strong></div>
+  </div>
+
+  <!-- ABOUT -->
+  <section>
+    <h2>What We Do</h2>
+    <p style="color:#444; margin-bottom:1.5rem;">{{service_description}}</p>
+    <div class="services-grid">
+      <div class="service-card">
+        <div class="service-card-text">
+          <h3>{{service_1}}</h3>
+          <p>{{service_1_desc}}</p>
+        </div>
+        <span class="service-price">{{service_1_price}}</span>
+      </div>
+      <div class="service-card">
+        <div class="service-card-text">
+          <h3>{{service_2}}</h3>
+          <p>{{service_2_desc}}</p>
+        </div>
+        <span class="service-price">{{service_2_price}}</span>
+      </div>
+      <div class="service-card">
+        <div class="service-card-text">
+          <h3>{{service_3}}</h3>
+          <p>{{service_3_desc}}</p>
+        </div>
+        <span class="service-price">{{service_3_price}}</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- TESTIMONIAL -->
+  <section style="padding-top:0;">
+    <div class="testimonial">
+      <p>"{{testimonial_text}}"</p>
+      <cite>— {{testimonial_name}}, {{testimonial_suburb}}</cite>
+    </div>
+  </section>
+
+  <!-- LOCATION -->
+  <section>
+    <h2>Where We Are</h2>
+    <p class="location-text">📍 We serve <strong>{{location_area}}</strong> and surrounding areas.</p>
+    <div class="map-wrap">
+      <iframe
+        src="https://maps.google.com/maps?q={{location_area}}&output=embed"
+        loading="lazy"
+        referrerpolicy="no-referrer-when-downgrade"
+        title="Our location">
+      </iframe>
+    </div>
+  </section>
+
+  <!-- FINAL CTA -->
+  <div class="cta-block">
+    <h2>Ready to book?</h2>
+    <p>We reply fast. Message us now and let's get sorted.</p>
+    <div class="btn-group">
+      <a class="btn-wa" href="https://wa.me/{{whatsapp_number}}?text=Hi%2C%20I%20found%20your%20website%20and%20I%27d%20like%20to%20book%20a%20service.">
+        💬 WhatsApp us now
+      </a>
+      <a class="btn-call" href="tel:{{phone_number}}" style="border-color:rgba(255,255,255,0.4);">
+        📞 Tap to call
+      </a>
+    </div>
+    <p class="hours">🕐 {{operating_hours}}</p>
+  </div>
+
+  <!-- FOOTER -->
+  <footer>
+    <p>© {{business_name}} · Built with <a href="https://mzansibusiness.vercel.app">Mzansi</a></p>
+  </footer>
+
+  <!-- STICKY WHATSAPP BUTTON -->
+  <a class="sticky-wa" href="https://wa.me/{{whatsapp_number}}?text=Hi%2C%20I%20found%20your%20website%20and%20I%27d%20like%20to%20book%20a%20service." aria-label="WhatsApp">
+    💬
+  </a>
+
+</body>
+</html>
