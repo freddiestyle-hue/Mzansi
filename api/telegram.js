@@ -111,9 +111,21 @@ function fillTemplate(template, data) {
   return template.replace(/\{\{(\w+)\}\}/g, (_, key) => (data[key] || '').replace(/\\/g, '\\\\'))
 }
 
+function fetchUrl(url) {
+  return new Promise((resolve, reject) => {
+    https.get(url, res => {
+      if (res.statusCode === 301 || res.statusCode === 302) {
+        return fetchUrl(res.headers.location).then(resolve).catch(reject)
+      }
+      let data = ''
+      res.on('data', c => data += c)
+      res.on('end', () => resolve(data))
+    }).on('error', reject)
+  })
+}
+
 async function deployToVercel(clientData) {
-  const templateRes = await fetch('https://raw.githubusercontent.com/freddiestyle-hue/Mzansi/main/index.html')
-  const template = await templateRes.text()
+  const template = await fetchUrl('https://raw.githubusercontent.com/freddiestyle-hue/Mzansi/main/index.html')
   const html = fillTemplate(template, clientData)
   const projectName = `mzansi-${slugify(clientData.business_name)}`
 
