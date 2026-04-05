@@ -1,8 +1,6 @@
 {
   "version": 2,
-  "functions": {
-    "api/deploy.js": { "runtime": "nodejs20.x" }
-  },
+
   "routes": [
     { "src": "/api/deploy", "dest": "/api/deploy.js" },
     { "src": "/(.*)", "dest": "/index.html" }
