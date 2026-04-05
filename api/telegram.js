@@ -149,57 +149,140 @@ async function deployToVercel(clientData) {
 
 // ─── CONVERSATION STEPS ───────────────────────────────────────────────────────
 
-const STEPS = [
-  {
-    key: 'business_name',
-    ask: () => `Welcome to <b>Mzansi Pros</b>! 👋\n\nLet's get your professional website up in a few minutes.\n\n<b>What is your business name and trade?</b>\n\n<i>e.g. Benny Painting, Sipho Plumbing, Thandi Electricals</i>`
+const MESSAGES = {
+  en: {
+    welcome: `Welcome to <b>Mzansi Pros</b>!\n\nLet's get your professional website up in a few minutes.`,
+    ask_name: `<b>What is your business name and trade?</b>\n\n<i>e.g. Benny Painting, Sipho Plumbing, Thandi Electricals</i>`,
+    ask_area: (s) => `Got it - <b>${s.business_name}</b>\n\n<b>Which area do you serve?</b>\n\n<i>e.g. Mitchells Plain Cape Town, Khayelitsha, Soweto</i>`,
+    ask_phone: `<b>What is your phone number for customers?</b>\n\n<i>e.g. 0821234567</i>`,
+    ask_photo: `<b>Send us one photo of your work.</b>\n\n<i>A clear photo of a completed job works best. This will be the main image on your website.</i>`,
+    ask_services: `Almost done! <b>What services do you offer?</b>\n\nList one per line:\n<i>Geyser repair\nLeak fix\nNew installation</i>`,
+    uploading: 'Uploading your photo...',
+    building: 'Building your website now... This takes about 30 seconds.',
+    done: (url) => `Your website is live!\n\n<b>${url}</b>\n\nShare this link with your customers. They can WhatsApp you directly from it.\n\nWelcome to Mzansi Pros!`,
+    photo_prompt: 'Please send a photo of your work. Tap the attachment icon and choose a photo.',
+    text_prompt: 'Please send a text message to answer this question.',
+    error_photo: 'Sorry, there was an issue uploading your photo. Please try again.',
+    error_deploy: 'Sorry, there was a problem building your website. We will try again shortly.',
   },
-  {
-    key: 'location_area',
-    ask: (s) => `Got it - <b>${s.business_name}</b>\n\n<b>Which area do you serve?</b>\n\n<i>e.g. Mitchells Plain Cape Town, Khayelitsha, Soweto Johannesburg</i>`
+  af: {
+    welcome: `Welkom by <b>Mzansi Pros</b>!\n\nKom ons kry jou professionele webwerf binne 'n paar minute op.`,
+    ask_name: `<b>Wat is jou besigheidsnaam en ambag?</b>\n\n<i>bv. Benny Skilder, Sipho Loodgieter, Thandi Elektrisiën</i>`,
+    ask_area: (s) => `Goed - <b>${s.business_name}</b>\n\n<b>Watter area bedien jy?</b>\n\n<i>bv. Mitchells Plain Kaapstad, Soweto Johannesburg</i>`,
+    ask_phone: `<b>Wat is jou foonnommer vir kliënte?</b>\n\n<i>bv. 0821234567</i>`,
+    ask_photo: `<b>Stuur vir ons een foto van jou werk.</b>\n\n<i>'n Duidelike foto van 'n voltooide werk is die beste.</i>`,
+    ask_services: `Amper klaar! <b>Watter dienste bied jy aan?</b>\n\nLys een per reël:\n<i>Geyser herstel\nLekkasie regmaak\nNuwe installasie</i>`,
+    uploading: 'Laai jou foto op...',
+    building: 'Bou nou jou webwerf... Dit neem sowat 30 sekondes.',
+    done: (url) => `Jou webwerf is lewendig!\n\n<b>${url}</b>\n\nDeel hierdie skakel met jou kliënte.\n\nWelkom by Mzansi Pros!`,
+    photo_prompt: 'Stuur asseblief \'n foto van jou werk.',
+    text_prompt: 'Stuur asseblief \'n teksbooodskap om hierdie vraag te beantwoord.',
+    error_photo: 'Jammer, daar was \'n probleem met die oplaai van jou foto. Probeer asseblief weer.',
+    error_deploy: 'Jammer, daar was \'n probleem met die bou van jou webwerf. Ons sal binnekort weer probeer.',
   },
-  {
-    key: 'phone_number',
-    ask: () => `<b>What is your phone number for customers?</b>\n\n<i>e.g. 0821234567</i>`
+  zu: {
+    welcome: `Siyakwamukela ku-<b>Mzansi Pros</b>!\n\nAsikheni iwebhusayithi yakho yomsebenzi ngomzuzu omfishane.`,
+    ask_name: `<b>Yiliphi igama lebhizinisi lakho nomsebenzi owenzayo?</b>\n\n<i>isb. Benny Ukupenda, Sipho Isizamfanelo, Thandi Ugesi</i>`,
+    ask_area: (s) => `Kulungile - <b>${s.business_name}</b>\n\n<b>Yisiphi isigodi osebenza kuso?</b>\n\n<i>isb. Mitchells Plain eKapa, Khayelitsha, Soweto eGoli</i>`,
+    ask_phone: `<b>Yini inombolo yakho yefoni yamagcokama?</b>\n\n<i>isb. 0821234567</i>`,
+    ask_photo: `<b>Thumela isithombe somsebenzi wakho.</b>\n\n<i>Isithombe esisobala somsebenzi oqediwe sisebenza kahle.</i>`,
+    ask_services: `Siyaqeda! <b>Yimiphi imisebenzi oyenzayo?</b>\n\nBhala eyodwa ngomugqa ngamunye:\n<i>Ukulungisa ugesi\nUkulungisa ukuvuza\nUkufaka okusha</i>`,
+    uploading: 'Iyalayisha isithombe sakho...',
+    building: 'Yakha iwebhusayithi yakho manje... Kuthatha imizuzu engu-30.',
+    done: (url) => `Iwebhusayithi yakho iphila!\n\n<b>${url}</b>\n\nAbiselana nalo mxholo namagcokama akho.\n\nSiyakwamukela ku-Mzansi Pros!`,
+    photo_prompt: 'Sicela uthumele isithombe somsebenzi wakho.',
+    text_prompt: 'Sicela uthumele umlayezo wombhalo ukuphendula lo mbuzo.',
+    error_photo: 'Uxolo, kukhona inkinga nge-upload yesithombe sakho. Sicela uzame futhi.',
+    error_deploy: 'Uxolo, kukhona inkinga ekwakhiweni kwewebhusayithi yakho. Sizazama futhi maduze.',
   },
-  {
-    key: 'photo',
-    ask: () => `<b>Send us one photo of your work.</b> 📸\n\n<i>A clear photo of a completed job works best. This will be the main image on your website.</i>`
-  },
-  {
-    key: 'services',
-    ask: () => `Almost done! <b>What services do you offer?</b>\n\nList one per line:\n<i>Geyser repair\nLeak fix\nNew installation</i>`
+  xh: {
+    welcome: `Wamkelekile ku-<b>Mzansi Pros</b>!\n\nAsikheni iwebhusayithi yakho yomsebenzi ngomzuzu omfutshane.`,
+    ask_name: `<b>Ngubani igama lebhizinisi lakho nomsebenzi owenzayo?</b>\n\n<i>umz. Benny Ukupenda, Sipho Izicoci, Thandi Umbane</i>`,
+    ask_area: (s) => `Kulungile - <b>${s.business_name}</b>\n\n<b>Yeyiphi indawo osebenza kuyo?</b>\n\n<i>umz. Mitchells Plain eKapa, Khayelitsha, Soweto eGoli</i>`,
+    ask_phone: `<b>Yintoni inombolo yakho yomnxeba yabantu abakuhlawulayo?</b>\n\n<i>umz. 0821234567</i>`,
+    ask_photo: `<b>Thumela umfanekiso womsebenzi wakho.</b>\n\n<i>Umfanekiso ocacileyo womsebenzi ogqityiweyo usebenza kakuhle.</i>`,
+    ask_services: `Siyaphela! <b>Yimiphi imisebenzi oyenzayo?</b>\n\nBhala enye ngomgca ngamnye:\n<i>Ukulungisa i-geyser\nUkulungisa ukuphalaza\nUkufaka okusha</i>`,
+    uploading: 'Iyalayisha umfanekiso wakho...',
+    building: 'Yakha iwebhusayithi yakho ngoku... Ithatha imizuzu engama-30.',
+    done: (url) => `Iwebhusayithi yakho iphilile!\n\n<b>${url}</b>\n\nAba nomxholo nabantu abakuhlawulayo bakho.\n\nWamkelekile ku-Mzansi Pros!`,
+    photo_prompt: 'Nceda uthumele umfanekiso womsebenzi wakho.',
+    text_prompt: 'Nceda uthumele umlayezo wombhalo uphendule lo mbuzo.',
+    error_photo: 'Uxolo, kukhona ingxaki ne-upload yomfanekiso wakho. Nceda uzame kwakhona.',
+    error_deploy: 'Uxolo, kukhona ingxaki ekwakhiweni kwewebhusayithi yakho. Siza kuzama kwakhona kungekudala.',
   }
+}
+
+const LANGUAGE_STEP = {
+  key: 'language',
+  ask: () => `Welcome to <b>Mzansi Pros</b>!\n\nPlease choose your language / Kies jou taal / Khetha ulimi lwakho:\n\n1. English\n2. Afrikaans\n3. Zulu\n4. Xhosa`,
+}
+
+const STEPS = [
+  { key: 'business_name', ask: (s, m) => `${m.welcome}\n\n${m.ask_name}` },
+  { key: 'location_area', ask: (s, m) => m.ask_area(s) },
+  { key: 'phone_number', ask: (s, m) => m.ask_phone },
+  { key: 'photo', ask: (s, m) => m.ask_photo },
+  { key: 'services', ask: (s, m) => m.ask_services },
 ]
 
 // ─── SESSION LOGIC ────────────────────────────────────────────────────────────
 
+function getLang(session) {
+  return MESSAGES[session.data.language] || MESSAGES.en
+}
+
 async function handleMessage(chatId, message) {
-  let session = sessions.get(chatId) || { step: 0, data: {} }
+  let session = sessions.get(chatId) || { step: -1, data: {} }
 
   // /start or restart
   if (message.text && (message.text === '/start' || message.text === '/restart')) {
-    session = { step: 0, data: {} }
+    session = { step: -1, data: {} }
     sessions.set(chatId, session)
-    await sendMessage(chatId, STEPS[0].ask(session.data))
+    await sendMessage(chatId, LANGUAGE_STEP.ask(), {
+      reply_markup: {
+        keyboard: [[{ text: '1. English' }, { text: '2. Afrikaans' }], [{ text: '3. Zulu' }, { text: '4. Xhosa' }]],
+        one_time_keyboard: true,
+        resize_keyboard: true
+      }
+    })
+    return
+  }
+
+  // Language selection step
+  if (session.step === -1) {
+    if (!message.text) {
+      await sendMessage(chatId, LANGUAGE_STEP.ask())
+      return
+    }
+    const t = message.text.toLowerCase()
+    let lang = 'en'
+    if (t.includes('afrikaans') || t.includes('2')) lang = 'af'
+    else if (t.includes('zulu') || t.includes('3')) lang = 'zu'
+    else if (t.includes('xhosa') || t.includes('4')) lang = 'xh'
+    session.data.language = lang
+    session.step = 0
+    sessions.set(chatId, session)
+    const m = getLang(session)
+    await sendMessage(chatId, STEPS[0].ask(session.data, m), { reply_markup: { remove_keyboard: true } })
     return
   }
 
   const currentStep = STEPS[session.step]
   if (!currentStep) return
+  const m = getLang(session)
 
   // Handle photo step
   if (currentStep.key === 'photo') {
     if (!message.photo && !message.document) {
-      await sendMessage(chatId, 'Please send a photo of your work. Tap the 📎 icon and choose a photo.')
+      await sendMessage(chatId, m.photo_prompt)
       return
     }
 
-    await sendMessage(chatId, 'Uploading your photo...')
+    await sendMessage(chatId, m.uploading)
 
     try {
       const photo = message.photo
-        ? message.photo[message.photo.length - 1] // highest res
+        ? message.photo[message.photo.length - 1]
         : message.document
 
       const fileInfo = await getFile(photo.file_id)
@@ -211,19 +294,19 @@ async function handleMessage(chatId, message) {
       session.data.photo_url = photoUrl
       session.step++
       sessions.set(chatId, session)
-      await sendMessage(chatId, STEPS[session.step - 1 + 1]
-        ? STEPS[session.step].ask(session.data)
-        : 'Done!')
+      if (session.step < STEPS.length) {
+        await sendMessage(chatId, STEPS[session.step].ask(session.data, m))
+      }
     } catch (err) {
       console.error('Photo upload error:', err)
-      await sendMessage(chatId, 'Sorry, there was an issue uploading your photo. Please try again.')
+      await sendMessage(chatId, m.error_photo)
     }
     return
   }
 
   // Handle text steps
   if (!message.text) {
-    await sendMessage(chatId, 'Please send a text message to answer this question.')
+    await sendMessage(chatId, m.text_prompt)
     return
   }
 
@@ -233,12 +316,12 @@ async function handleMessage(chatId, message) {
 
   // More steps to go
   if (session.step < STEPS.length) {
-    await sendMessage(chatId, STEPS[session.step].ask(session.data))
+    await sendMessage(chatId, STEPS[session.step].ask(session.data, m))
     return
   }
 
   // All done - deploy
-  await sendMessage(chatId, 'Building your website now... This takes about 30 seconds.')
+  await sendMessage(chatId, getLang(session).building)
 
   try {
     const d = session.data
@@ -285,9 +368,7 @@ async function handleMessage(chatId, message) {
 
     if (result.url) {
       const siteUrl = `https://${result.url}`
-      await sendMessage(chatId,
-        `Your website is live! 🎉\n\n<b>${siteUrl}</b>\n\nShare this link with your customers. They can WhatsApp you directly from it.\n\nWelcome to Mzansi Pros!`
-      )
+      await sendMessage(chatId, m.done(siteUrl))
       // Reset session
       sessions.delete(chatId)
     } else {
@@ -295,7 +376,7 @@ async function handleMessage(chatId, message) {
     }
   } catch (err) {
     console.error('Deploy error:', err)
-    await sendMessage(chatId, 'Sorry, there was a problem building your website. We will try again shortly.')
+    await sendMessage(chatId, m.error_deploy)
     session.step = STEPS.length - 1 // stay on last step
     sessions.set(chatId, session)
   }
