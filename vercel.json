@@ -1,9 +1,8 @@
 {
   "version": 2,
-  "builds": [
-    { "src": "api/deploy.js", "use": "@vercel/node" },
-    { "src": "index.html", "use": "@vercel/static" }
-  ],
+  "functions": {
+    "api/deploy.js": { "runtime": "nodejs20.x" }
+  },
   "routes": [
     { "src": "/api/deploy", "dest": "/api/deploy.js" },
     { "src": "/(.*)", "dest": "/index.html" }
