@@ -3,6 +3,7 @@
 
   "routes": [
     { "src": "/api/deploy", "dest": "/api/deploy.js" },
+    { "src": "/api/telegram", "dest": "/api/telegram.js" },
     { "src": "/(.*)", "dest": "/index.html" }
   ]
 }
