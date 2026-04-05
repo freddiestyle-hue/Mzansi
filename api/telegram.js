@@ -1,9 +1,7 @@
 const https = require('https')
 const sessions = new Map()
 
-module.exports.config = { api: { bodyParser: false } }
-
-module.exports = async (req, res) => {
+async function handler(req, res) {
   if (req.method !== 'POST') return res.status(405).end()
 
   let body = ''
@@ -25,6 +23,9 @@ module.exports = async (req, res) => {
   await sendMessage(chatId, 'Working! Send /start to begin.')
   res.status(200).json({ ok: true })
 }
+
+handler.config = { api: { bodyParser: false } }
+module.exports = handler
 
 function sendMessage(chatId, text) {
   const BOT_TOKEN = process.env.TELEGRAM_BOT_TOKEN
