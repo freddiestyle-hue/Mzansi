@@ -6,45 +6,33 @@
   <meta name="description" content="{{tagline}} — {{location_area}}" />
   <title>{{business_name}}</title>
   <style>
+    @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@600;700&family=DM+Sans:ital,wght@0,400;0,500;1,400&family=DM+Mono&display=swap');
+
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     html { scroll-behavior: smooth; }
-
-    :root {
-      --green: #25D366;
-      --green-light: rgba(37,211,102,0.12);
-      --green-border: rgba(37,211,102,0.28);
-      --dark: #0f172a;
-      --dark-2: #1e293b;
-      --text: #111827;
-      --muted: #6b7280;
-      --surface: #f8fafc;
-      --border: #e5e7eb;
-      --radius: 14px;
-      --radius-sm: 9px;
-    }
-
     body {
-      font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
-      color: var(--text);
-      background: #fff;
+      font-family: 'DM Sans', -apple-system, sans-serif;
+      color: #2B2B2B;
+      background: #F5F0EB;
       font-size: 16px;
       line-height: 1.6;
-      -webkit-font-smoothing: antialiased;
+      max-width: 640px;
+      margin: 0 auto;
     }
     img { display: block; max-width: 100%; }
     a { text-decoration: none; color: inherit; }
 
-    /* ── HERO ── */
+    /* HERO */
     .hero {
       position: relative;
       min-height: 100svh;
       display: flex;
       flex-direction: column;
       justify-content: flex-end;
-      padding: 2.25rem 1.25rem 2.75rem;
+      padding: 2.5rem 1.5rem;
       overflow: hidden;
     }
-    .hero-img {
+    .hero-bg {
       position: absolute;
       inset: 0;
       width: 100%;
@@ -57,662 +45,375 @@
       inset: 0;
       background: linear-gradient(
         to top,
-        rgba(0,0,0,0.92) 0%,
-        rgba(0,0,0,0.55) 42%,
-        rgba(0,0,0,0.14) 70%,
+        #1B4332 0%,
+        rgba(27,67,50,0.72) 40%,
+        rgba(27,67,50,0.18) 80%,
         transparent 100%
       );
       z-index: 1;
-    }
-    .hero-badge {
-      position: relative;
-      z-index: 2;
-      display: inline-flex;
-      align-items: center;
-      gap: 0.35rem;
-      background: rgba(37,211,102,0.15);
-      border: 1px solid var(--green-border);
-      color: #6effa7;
-      font-size: 0.73rem;
-      font-weight: 700;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-      padding: 0.28rem 0.75rem;
-      border-radius: 99px;
-      margin-bottom: 1.1rem;
-      width: fit-content;
     }
     .hero-content {
       position: relative;
       z-index: 2;
       color: #fff;
-      max-width: 520px;
     }
     .hero-content h1 {
-      font-size: clamp(2rem, 9vw, 3.2rem);
-      font-weight: 800;
-      line-height: 1.08;
+      font-family: 'Space Grotesk', sans-serif;
+      font-weight: 700;
+      font-size: clamp(2rem, 8vw, 2.75rem);
+      line-height: 1.1;
       letter-spacing: -0.025em;
-      margin-bottom: 0.65rem;
+      margin-bottom: 0.5rem;
     }
     .hero-tagline {
       font-size: 1.05rem;
-      color: rgba(255,255,255,0.8);
-      margin-bottom: 2.25rem;
-      line-height: 1.55;
+      font-weight: 500;
+      opacity: 0.88;
+      margin-bottom: 2rem;
     }
     .btn-group {
       display: flex;
       flex-direction: column;
-      gap: 0.8rem;
+      gap: 0.75rem;
+      max-width: 360px;
     }
     .btn-wa {
       display: flex;
       align-items: center;
       justify-content: center;
-      gap: 0.55rem;
-      background: var(--green);
+      gap: 0.6rem;
+      background: #E2762E;
       color: #fff;
+      font-family: 'Space Grotesk', sans-serif;
       font-size: 1rem;
       font-weight: 700;
-      padding: 1rem 1.75rem;
-      border-radius: var(--radius);
-      box-shadow: 0 4px 22px rgba(37,211,102,0.48);
-      transition: opacity 0.15s, transform 0.1s;
+      padding: 1rem 1.5rem;
+      border-radius: 12px;
+      box-shadow: 0 4px 20px rgba(226,118,46,0.45);
+      letter-spacing: 0.01em;
     }
-    .btn-wa:active { transform: scale(0.975); opacity: 0.9; }
     .btn-call {
       display: flex;
       align-items: center;
       justify-content: center;
-      gap: 0.55rem;
-      background: rgba(255,255,255,0.09);
-      backdrop-filter: blur(10px);
-      -webkit-backdrop-filter: blur(10px);
+      gap: 0.6rem;
+      background: transparent;
       color: #fff;
+      font-family: 'Space Grotesk', sans-serif;
       font-size: 1rem;
       font-weight: 600;
-      padding: 1rem 1.75rem;
-      border-radius: var(--radius);
-      border: 1.5px solid rgba(255,255,255,0.38);
-      transition: background 0.15s;
-    }
-    .btn-call:active { background: rgba(255,255,255,0.18); }
-
-    /* ── TRUST STRIP ── */
-    .trust {
-      background: var(--dark);
-      padding: 0.95rem 1.25rem;
-      overflow-x: auto;
-      -webkit-overflow-scrolling: touch;
-      scrollbar-width: none;
-    }
-    .trust::-webkit-scrollbar { display: none; }
-    .trust-inner {
-      display: flex;
-      align-items: center;
-      gap: 1.25rem;
-      min-width: max-content;
-    }
-    .trust-item {
-      display: flex;
-      align-items: center;
-      gap: 0.45rem;
-      color: rgba(255,255,255,0.82);
-      font-size: 0.82rem;
-      font-weight: 500;
-      white-space: nowrap;
-    }
-    .trust-icon {
-      width: 26px;
-      height: 26px;
-      background: var(--green-light);
-      border: 1px solid var(--green-border);
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 0.75rem;
-      flex-shrink: 0;
-    }
-    .trust-sep {
-      width: 1px;
-      height: 18px;
-      background: rgba(255,255,255,0.12);
-      flex-shrink: 0;
+      padding: 1rem 1.5rem;
+      border-radius: 12px;
+      border: 2px solid rgba(255,255,255,0.6);
+      letter-spacing: 0.01em;
     }
 
-    /* ── SECTION WRAPPER ── */
-    .wrap {
-      max-width: 640px;
-      margin: 0 auto;
-      padding: 3rem 1.25rem;
+    /* TRUST BAR */
+    .trust-bar {
+      background: #1B4332;
+      padding: 1.25rem 1.5rem;
     }
-    .wrap--tight { padding-bottom: 1.75rem; }
-    .section-label {
-      font-size: 0.7rem;
+    .trust-items {
+      display: flex;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 1rem 0.5rem;
+    }
+    .trust-item { display: flex; flex-direction: column; gap: 0.1rem; }
+    .trust-label {
+      font-family: 'Space Grotesk', sans-serif;
       font-weight: 700;
-      letter-spacing: 0.11em;
-      text-transform: uppercase;
-      color: var(--green);
-      margin-bottom: 0.45rem;
+      font-size: 0.85rem;
+      color: #F5F0EB;
+      line-height: 1.2;
     }
-    .section-heading {
-      font-size: clamp(1.45rem, 5.5vw, 2rem);
-      font-weight: 800;
-      letter-spacing: -0.022em;
-      line-height: 1.15;
+    .trust-sub { font-size: 0.72rem; color: rgba(245,240,235,0.55); }
+
+    /* SECTION SHELL */
+    .section { padding: 3rem 1.5rem; }
+    .section-title {
+      font-family: 'Space Grotesk', sans-serif;
+      font-weight: 700;
+      font-size: 1.5rem;
+      color: #1B4332;
+      letter-spacing: -0.015em;
       margin-bottom: 0.5rem;
-      color: var(--text);
     }
-    .section-sub {
-      color: var(--muted);
-      font-size: 0.93rem;
-      line-height: 1.6;
-      margin-bottom: 1.75rem;
+    .section-intro {
+      font-size: 1rem;
+      color: #2B2B2B;
+      margin-bottom: 2rem;
+      line-height: 1.7;
     }
 
-    /* ── SERVICES ── */
-    .services-grid {
-      display: flex;
-      flex-direction: column;
-      gap: 0.8rem;
-    }
+    /* SERVICES */
+    .section-services { background: #F5F0EB; }
+    .services-list { display: flex; flex-direction: column; gap: 1rem; }
     .service-card {
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-left: 3px solid var(--green);
-      border-radius: var(--radius);
-      padding: 1.1rem 1.15rem;
+      background: #F5F0EB;
+      border: 1.5px solid #D4C5B2;
+      border-radius: 12px;
+      padding: 1.25rem;
       display: flex;
       justify-content: space-between;
       align-items: flex-start;
       gap: 1rem;
     }
-    .service-info h3 {
-      font-size: 0.95rem;
-      font-weight: 700;
-      margin-bottom: 0.2rem;
-      color: var(--text);
+    .service-card-text h3 {
+      font-family: 'Space Grotesk', sans-serif;
+      font-weight: 600;
+      font-size: 1rem;
+      color: #2B2B2B;
+      margin-bottom: 0.25rem;
     }
-    .service-info p {
-      font-size: 0.83rem;
-      color: var(--muted);
-      line-height: 1.5;
-    }
+    .service-card-text p { font-size: 0.875rem; color: #777; line-height: 1.5; }
     .service-price {
-      font-size: 0.85rem;
-      font-weight: 700;
-      color: var(--green);
-      background: var(--green-light);
-      border-radius: 6px;
-      padding: 0.22rem 0.6rem;
+      font-family: 'DM Mono', monospace;
+      font-size: 0.9rem;
+      color: #E2762E;
       white-space: nowrap;
       flex-shrink: 0;
-      margin-top: 0.1rem;
+      padding-top: 0.1rem;
     }
 
-    /* ── GALLERY ── */
-    .gallery-section {
-      background: var(--surface);
-      border-top: 1px solid var(--border);
-      border-bottom: 1px solid var(--border);
-      padding: 2.75rem 0;
-    }
-    .gallery-header {
-      max-width: 640px;
-      margin: 0 auto;
-      padding: 0 1.25rem 1.5rem;
-    }
+    /* GALLERY */
+    .section-gallery { background: #D4C5B2; }
+    .section-gallery .section-title { color: #1B4332; }
     .gallery-grid {
       display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 4px;
-      padding: 0 1.25rem;
-      max-width: 640px;
-      margin: 0 auto;
+      grid-template-columns: 1fr 1fr;
+      gap: 0.625rem;
     }
     @media (min-width: 480px) {
-      .gallery-grid { grid-template-columns: repeat(3, 1fr); }
+      .gallery-grid { grid-template-columns: 1fr 1fr 1fr; }
     }
-    .gallery-item {
-      aspect-ratio: 1;
-      overflow: hidden;
-      border-radius: var(--radius-sm);
-      background: var(--border);
-    }
-    .gallery-item img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      transition: transform 0.35s ease;
-    }
-    .gallery-item img:hover { transform: scale(1.05); }
+    .gallery-item { border-radius: 10px; overflow: hidden; aspect-ratio: 1 / 1; }
+    .gallery-item img { width: 100%; height: 100%; object-fit: cover; }
+    .gallery-item:has(img[src=""]) { display: none; }
 
-    /* ── TESTIMONIALS ── */
-    .testimonials-grid {
-      display: flex;
-      flex-direction: column;
-      gap: 0.9rem;
+    /* TESTIMONIAL */
+    .section-testimonial { background: #1B4332; }
+    .quote-mark {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 5.5rem;
+      line-height: 0.75;
+      color: #E2762E;
+      display: block;
+      margin-bottom: 1.25rem;
+      user-select: none;
     }
-    .t-card {
-      background: #fff;
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-      padding: 1.2rem 1.25rem;
-      box-shadow: 0 1px 6px rgba(0,0,0,0.05);
-    }
-    .t-stars {
-      color: #f59e0b;
-      font-size: 0.88rem;
-      letter-spacing: 0.04em;
-      margin-bottom: 0.7rem;
-    }
-    .t-text {
-      font-size: 0.93rem;
-      color: #374151;
+    .testimonial-text {
+      font-size: 1.15rem;
+      font-weight: 500;
       font-style: italic;
       line-height: 1.65;
-      margin-bottom: 1rem;
+      color: #F5F0EB;
+      margin-bottom: 1.25rem;
     }
-    .t-author {
-      display: flex;
-      align-items: center;
-      gap: 0.6rem;
-    }
-    .t-avatar {
-      width: 34px;
-      height: 34px;
-      border-radius: 50%;
-      background: var(--green);
-      color: #fff;
-      font-size: 0.82rem;
-      font-weight: 700;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      flex-shrink: 0;
-      text-transform: uppercase;
-    }
-    .t-name {
-      font-size: 0.86rem;
-      font-weight: 700;
-      color: var(--text);
-    }
-    .t-suburb {
-      font-size: 0.78rem;
-      color: var(--muted);
+    .testimonial-attr {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 0.875rem;
+      font-weight: 600;
+      color: rgba(245,240,235,0.6);
     }
 
-    /* ── LOCATION ── */
-    .location-section {
-      background: var(--dark);
-      color: #fff;
-    }
-    .location-section .section-label { color: #6effa7; }
-    .location-section .section-heading { color: #fff; }
-    .location-section .section-sub { color: rgba(255,255,255,0.6); }
+    /* LOCATION */
+    .section-location { background: #F5F0EB; }
+    .section-location .section-title { margin-bottom: 1rem; }
+    .location-body { font-size: 1rem; color: #2B2B2B; line-height: 1.65; margin-bottom: 0.5rem; }
+    .location-area-name { color: #E2762E; font-weight: 600; }
     .location-pill {
       display: inline-flex;
       align-items: center;
       gap: 0.4rem;
-      background: rgba(37,211,102,0.1);
-      border: 1px solid var(--green-border);
-      color: #6effa7;
-      font-size: 1rem;
-      font-weight: 700;
-      padding: 0.5rem 1rem;
+      background: rgba(226,118,46,0.1);
+      color: #E2762E;
+      font-family: 'Space Grotesk', sans-serif;
+      font-weight: 600;
+      font-size: 0.85rem;
+      padding: 0.5rem 0.875rem;
       border-radius: 8px;
-      margin-bottom: 1.5rem;
+      border: 1.5px solid rgba(226,118,46,0.28);
+      margin-top: 1rem;
     }
-    .info-card {
-      display: flex;
-      align-items: flex-start;
-      gap: 0.85rem;
-      background: rgba(255,255,255,0.055);
-      border: 1px solid rgba(255,255,255,0.1);
-      border-radius: var(--radius);
-      padding: 1.1rem 1.15rem;
-    }
-    .info-card + .info-card { margin-top: 0.75rem; }
-    .info-card-icon { font-size: 1.35rem; flex-shrink: 0; margin-top: 0.1rem; }
-    .info-card-body strong {
-      display: block;
-      font-size: 0.93rem;
+
+    /* FINAL CTA */
+    .cta-block { background: #1B4332; padding: 3rem 1.5rem; text-align: center; }
+    .cta-block h2 {
+      font-family: 'Space Grotesk', sans-serif;
       font-weight: 700;
-      color: #fff;
-      margin-bottom: 0.2rem;
+      font-size: 1.875rem;
+      color: #F5F0EB;
+      letter-spacing: -0.025em;
+      margin-bottom: 0.5rem;
     }
-    .info-card-body p {
-      font-size: 0.84rem;
-      color: rgba(255,255,255,0.6);
-      line-height: 1.5;
-    }
+    .cta-sub { font-size: 1rem; color: rgba(245,240,235,0.65); margin-bottom: 2rem; }
+    .cta-block .btn-group { margin: 0 auto 1.5rem; }
+    .operating-hours { font-size: 0.85rem; color: rgba(245,240,235,0.45); }
 
-    /* ── CTA BLOCK ── */
-    .cta-block {
-      background: #0a0a0a;
-      color: #fff;
-      text-align: center;
-      padding: 3.5rem 1.25rem;
-    }
-    .cta-block .section-label { margin-bottom: 0.6rem; }
-    .cta-block .section-heading {
-      color: #fff;
-      margin-bottom: 0.6rem;
-    }
-    .cta-block .section-sub {
-      margin-bottom: 2rem;
-    }
-    .cta-block .btn-group {
-      max-width: 380px;
-      margin: 0 auto;
-    }
-    .hours-note {
-      margin-top: 1.25rem;
-      font-size: 0.8rem;
-      color: rgba(255,255,255,0.35);
-    }
+    /* FOOTER */
+    footer { background: #D4C5B2; padding: 1.25rem 1.5rem; text-align: center; }
+    footer p { font-size: 0.8rem; color: #2B2B2B; }
+    footer a { color: #1B4332; font-weight: 600; text-decoration: underline; text-underline-offset: 2px; }
 
-    /* ── FOOTER ── */
-    footer {
-      background: #060606;
-      border-top: 1px solid #1a1a1a;
-      text-align: center;
-      padding: 1.25rem;
-      font-size: 0.74rem;
-      color: #4b5563;
-    }
-    footer a {
-      color: rgba(255,255,255,0.38);
-      text-decoration: underline;
-      text-underline-offset: 2px;
-    }
-
-    /* ── STICKY WHATSAPP ── */
-    .sticky-wa {
+    /* STICKY FAB */
+    .fab-wa {
       position: fixed;
       bottom: 1.5rem;
       right: 1.25rem;
       z-index: 999;
-      background: var(--green);
-      color: #fff;
+      background: #E2762E;
       width: 58px;
       height: 58px;
       border-radius: 50%;
       display: flex;
       align-items: center;
       justify-content: center;
-      box-shadow: 0 4px 24px rgba(37,211,102,0.55);
+      box-shadow: 0 4px 24px rgba(226,118,46,0.5);
     }
-    .sticky-wa::before {
-      content: '';
-      position: absolute;
-      inset: -5px;
-      border-radius: 50%;
-      border: 2.5px solid rgba(37,211,102,0.38);
-      animation: pulse-ring 2.4s cubic-bezier(0,0,0.2,1) infinite;
-    }
-    @keyframes pulse-ring {
-      0%   { transform: scale(1); opacity: 0.8; }
-      80%, 100% { transform: scale(1.45); opacity: 0; }
-    }
-
-    /* ── SVG ICON UTIL ── */
-    .icon-svg { width: 20px; height: 20px; flex-shrink: 0; }
+    .fab-wa svg { width: 28px; height: 28px; fill: #fff; }
   </style>
 </head>
 <body>
 
-  <!-- ═══ HERO ═══ -->
+  <!-- HERO -->
   <div class="hero">
-    <img class="hero-img" src="{{hero_image_url}}" alt="{{business_name}}" fetchpriority="high" />
+    <img class="hero-bg" src="{{hero_image_url}}" alt="{{business_name}}" fetchpriority="high" />
     <div class="hero-overlay"></div>
-    <div class="hero-badge">&#10003; Trusted local trades</div>
     <div class="hero-content">
       <h1>{{business_name}}</h1>
       <p class="hero-tagline">{{tagline}}</p>
       <div class="btn-group">
         <a class="btn-wa" href="https://wa.me/{{whatsapp_number}}?text=Hi%2C%20I%20found%20your%20website%20and%20I%27d%20like%20to%20book%20a%20service.">
-          <svg class="icon-svg" viewBox="0 0 24 24" fill="#fff" xmlns="http://www.w3.org/2000/svg"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg>
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="white" aria-hidden="true"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
           WhatsApp us now
         </a>
         <a class="btn-call" href="tel:{{phone_number}}">
-          &#9990; Tap to call
+          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 10.81 19.79 19.79 0 01.07 2.18 2 2 0 012.04 0h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L6.14 7.83a16 16 0 006.06 6.06l1.19-1.19a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"/></svg>
+          Tap to call
         </a>
       </div>
     </div>
   </div>
 
-  <!-- ═══ TRUST STRIP ═══ -->
-  <div class="trust">
-    <div class="trust-inner">
+  <!-- TRUST BAR -->
+  <div class="trust-bar">
+    <div class="trust-items">
       <div class="trust-item">
-        <div class="trust-icon">&#11088;</div>
-        5-Star Rated
+        <span class="trust-label">{{location_area}}</span>
+        <span class="trust-sub">Service area</span>
       </div>
-      <div class="trust-sep"></div>
       <div class="trust-item">
-        <div class="trust-icon">&#128205;</div>
-        {{location_area}}
+        <span class="trust-label">48h turnaround</span>
+        <span class="trust-sub">Fast response</span>
       </div>
-      <div class="trust-sep"></div>
       <div class="trust-item">
-        <div class="trust-icon">&#9889;</div>
-        Fast Response
+        <span class="trust-label">No contracts</span>
+        <span class="trust-sub">Book as you go</span>
       </div>
-      <div class="trust-sep"></div>
       <div class="trust-item">
-        <div class="trust-icon">&#128737;</div>
-        Fully Insured
-      </div>
-      <div class="trust-sep"></div>
-      <div class="trust-item">
-        <div class="trust-icon">&#10003;</div>
-        Workmanship Guaranteed
+        <span class="trust-label">WhatsApp us</span>
+        <span class="trust-sub">We reply fast</span>
       </div>
     </div>
   </div>
 
-  <!-- ═══ SERVICES ═══ -->
-  <div class="wrap">
-    <div class="section-label">What we offer</div>
-    <h2 class="section-heading">Our Services</h2>
-    <p class="section-sub">{{service_description}}</p>
-    <div class="services-grid">
-
-      <div class="service-card">
-        <div class="service-info">
-          <h3>{{service_1}}</h3>
-          <p>{{service_1_desc}}</p>
-        </div>
+  <!-- WHAT WE DO -->
+  <section class="section section-services">
+    <h2 class="section-title">What We Do</h2>
+    <p class="section-intro">{{service_description}}</p>
+    <div class="services-list">
+      <div class="service-card" data-svc>
+        <div class="service-card-text"><h3>{{service_1}}</h3><p>{{service_1_desc}}</p></div>
         <span class="service-price">{{service_1_price}}</span>
       </div>
-
-      <div class="service-card">
-        <div class="service-info">
-          <h3>{{service_2}}</h3>
-          <p>{{service_2_desc}}</p>
-        </div>
+      <div class="service-card" data-svc>
+        <div class="service-card-text"><h3>{{service_2}}</h3><p>{{service_2_desc}}</p></div>
         <span class="service-price">{{service_2_price}}</span>
       </div>
-
-      <div class="service-card">
-        <div class="service-info">
-          <h3>{{service_3}}</h3>
-          <p>{{service_3_desc}}</p>
-        </div>
+      <div class="service-card" data-svc>
+        <div class="service-card-text"><h3>{{service_3}}</h3><p>{{service_3_desc}}</p></div>
         <span class="service-price">{{service_3_price}}</span>
       </div>
-
-      <div class="service-card" data-svc-opt>
-        <div class="service-info">
-          <h3>{{service_4}}</h3>
-          <p>{{service_4_desc}}</p>
-        </div>
+      <div class="service-card" data-svc>
+        <div class="service-card-text"><h3>{{service_4}}</h3><p>{{service_4_desc}}</p></div>
         <span class="service-price">{{service_4_price}}</span>
       </div>
-
-      <div class="service-card" data-svc-opt>
-        <div class="service-info">
-          <h3>{{service_5}}</h3>
-          <p>{{service_5_desc}}</p>
-        </div>
+      <div class="service-card" data-svc>
+        <div class="service-card-text"><h3>{{service_5}}</h3><p>{{service_5_desc}}</p></div>
         <span class="service-price">{{service_5_price}}</span>
       </div>
-
     </div>
-  </div>
+  </section>
 
-  <!-- ═══ PHOTO GALLERY ═══ -->
-  <div class="gallery-section" id="gallery-section">
-    <div class="gallery-header">
-      <div class="section-label">Our work</div>
-      <h2 class="section-heading">Photo Gallery</h2>
-    </div>
+  <!-- PHOTO GALLERY -->
+  <section class="section section-gallery" id="gallery-section">
+    <h2 class="section-title">Our Work</h2>
     <div class="gallery-grid">
-      <div class="gallery-item" data-gal><img src="{{gallery_1}}" alt="Work photo 1" loading="lazy" /></div>
-      <div class="gallery-item" data-gal><img src="{{gallery_2}}" alt="Work photo 2" loading="lazy" /></div>
-      <div class="gallery-item" data-gal><img src="{{gallery_3}}" alt="Work photo 3" loading="lazy" /></div>
-      <div class="gallery-item" data-gal><img src="{{gallery_4}}" alt="Work photo 4" loading="lazy" /></div>
-      <div class="gallery-item" data-gal><img src="{{gallery_5}}" alt="Work photo 5" loading="lazy" /></div>
-      <div class="gallery-item" data-gal><img src="{{gallery_6}}" alt="Work photo 6" loading="lazy" /></div>
+      <div class="gallery-item"><img src="{{gallery_1}}" alt="Our work" loading="lazy" /></div>
+      <div class="gallery-item"><img src="{{gallery_2}}" alt="Our work" loading="lazy" /></div>
+      <div class="gallery-item"><img src="{{gallery_3}}" alt="Our work" loading="lazy" /></div>
+      <div class="gallery-item"><img src="{{gallery_4}}" alt="Our work" loading="lazy" /></div>
+      <div class="gallery-item"><img src="{{gallery_5}}" alt="Our work" loading="lazy" /></div>
+      <div class="gallery-item"><img src="{{gallery_6}}" alt="Our work" loading="lazy" /></div>
     </div>
-  </div>
+  </section>
 
-  <!-- ═══ TESTIMONIALS ═══ -->
-  <div class="wrap">
-    <div class="section-label">Happy customers</div>
-    <h2 class="section-heading">What people say</h2>
-    <div class="testimonials-grid" style="margin-top:1.5rem;">
+  <!-- TESTIMONIAL -->
+  <section class="section section-testimonial">
+    <span class="quote-mark" aria-hidden="true">&ldquo;</span>
+    <p class="testimonial-text">{{testimonial_text}}</p>
+    <p class="testimonial-attr">— {{testimonial_name}}, {{testimonial_suburb}}</p>
+  </section>
 
-      <div class="t-card">
-        <div class="t-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
-        <p class="t-text">&#8220;{{testimonial_text}}&#8221;</p>
-        <div class="t-author">
-          <div class="t-avatar" data-name="{{testimonial_name}}"></div>
-          <div>
-            <div class="t-name">{{testimonial_name}}</div>
-            <div class="t-suburb">{{testimonial_suburb}}</div>
-          </div>
-        </div>
-      </div>
+  <!-- LOCATION -->
+  <section class="section section-location">
+    <h2 class="section-title">Where We Work</h2>
+    <p class="location-body">We serve <strong class="location-area-name">{{location_area}}</strong> and surrounding areas.</p>
+    <p class="location-body">No need to come to us — we come to you.</p>
+    <span class="location-pill">
+      <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
+      We come to you — no need to travel
+    </span>
+  </section>
 
-      <div class="t-card" data-t-opt>
-        <div class="t-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
-        <p class="t-text">&#8220;{{testimonial_2_text}}&#8221;</p>
-        <div class="t-author">
-          <div class="t-avatar" data-name="{{testimonial_2_name}}"></div>
-          <div>
-            <div class="t-name">{{testimonial_2_name}}</div>
-            <div class="t-suburb">{{testimonial_2_suburb}}</div>
-          </div>
-        </div>
-      </div>
-
-      <div class="t-card" data-t-opt>
-        <div class="t-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
-        <p class="t-text">&#8220;{{testimonial_3_text}}&#8221;</p>
-        <div class="t-author">
-          <div class="t-avatar" data-name="{{testimonial_3_name}}"></div>
-          <div>
-            <div class="t-name">{{testimonial_3_name}}</div>
-            <div class="t-suburb">{{testimonial_3_suburb}}</div>
-          </div>
-        </div>
-      </div>
-
-    </div>
-  </div>
-
-  <!-- ═══ LOCATION ═══ -->
-  <div class="location-section">
-    <div class="wrap">
-      <div class="section-label">Where we work</div>
-      <h2 class="section-heading">We come to you</h2>
-      <p class="section-sub">No office. No showroom. We show up, do the job right, and leave the place clean.</p>
-      <div class="location-pill">&#128205; {{location_area}}</div>
-      <div class="info-card">
-        <div class="info-card-icon">&#128658;</div>
-        <div class="info-card-body">
-          <strong>Mobile service — we travel to you</strong>
-          <p>We cover {{location_area}} and surrounding areas. WhatsApp us to confirm we reach your suburb.</p>
-        </div>
-      </div>
-      <div class="info-card">
-        <div class="info-card-icon">&#128336;</div>
-        <div class="info-card-body">
-          <strong>{{operating_hours}}</strong>
-          <p>We try to respond within 30 minutes on WhatsApp. Emergency callouts may be available — just ask.</p>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- ═══ FINAL CTA ═══ -->
+  <!-- FINAL CTA -->
   <div class="cta-block">
-    <div class="section-label">Get in touch</div>
-    <h2 class="section-heading">Ready to book?</h2>
-    <p class="section-sub">We reply fast. Message us now and let's get it sorted.</p>
+    <h2>Ready to book?</h2>
+    <p class="cta-sub">We reply fast. Message us on WhatsApp and let's get sorted.</p>
     <div class="btn-group">
       <a class="btn-wa" href="https://wa.me/{{whatsapp_number}}?text=Hi%2C%20I%20found%20your%20website%20and%20I%27d%20like%20to%20book%20a%20service.">
-        <svg class="icon-svg" viewBox="0 0 24 24" fill="#fff" xmlns="http://www.w3.org/2000/svg"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg>
+        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="white" aria-hidden="true"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
         WhatsApp us now
       </a>
-      <a class="btn-call" href="tel:{{phone_number}}" style="border-color:rgba(255,255,255,0.28);">
-        &#9990; Tap to call
-      </a>
     </div>
-    <p class="hours-note">&#128336; {{operating_hours}}</p>
+    <p class="operating-hours">{{operating_hours}}</p>
   </div>
 
-  <!-- ═══ FOOTER ═══ -->
+  <!-- FOOTER -->
   <footer>
-    <p>&copy; {{business_name}} &middot; Built with <a href="https://mzansi.co.za">Mzansi</a></p>
+    <p>&copy; {{business_name}} &middot; Built with <a href="https://mzansipros.co.za">Mzansi Pros</a></p>
   </footer>
 
-  <!-- ═══ STICKY WHATSAPP ═══ -->
-  <a class="sticky-wa" href="https://wa.me/{{whatsapp_number}}?text=Hi%2C%20I%20found%20your%20website%20and%20I%27d%20like%20to%20book%20a%20service." aria-label="Chat on WhatsApp">
-    <svg viewBox="0 0 24 24" fill="#fff" width="26" height="26" xmlns="http://www.w3.org/2000/svg"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg>
+  <!-- STICKY FAB -->
+  <a class="fab-wa" href="https://wa.me/{{whatsapp_number}}?text=Hi%2C%20I%20found%20your%20website%20and%20I%27d%20like%20to%20book%20a%20service." aria-label="WhatsApp">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" aria-hidden="true"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
   </a>
 
   <script>
-    // Hide optional service cards when name is empty
-    document.querySelectorAll('[data-svc-opt]').forEach(function(card) {
-      var h3 = card.querySelector('h3');
-      if (!h3 || !h3.textContent.trim()) card.style.display = 'none';
+    // Hide service cards where the heading resolved to empty after mustache render
+    document.querySelectorAll('[data-svc]').forEach(function(card) {
+      var h = card.querySelector('h3');
+      if (!h || !h.textContent.trim()) card.style.display = 'none';
     });
-
-    // Hide optional testimonial cards when text is empty (just curly-quote delimiters)
-    document.querySelectorAll('[data-t-opt]').forEach(function(card) {
-      var p = card.querySelector('.t-text');
-      if (!p) { card.style.display = 'none'; return; }
-      var raw = p.textContent.replace(/[\u201c\u201d\u2018\u2019"""'']/g, '').trim();
-      if (!raw) card.style.display = 'none';
-    });
-
-    // Gallery: hide items with empty src, hide whole section if none visible
-    var galItems = document.querySelectorAll('[data-gal]');
-    var galVisible = 0;
-    galItems.forEach(function(item) {
+    // Hide gallery items with empty src; hide whole section if none have photos
+    var anyPhoto = false;
+    document.querySelectorAll('.gallery-item').forEach(function(item) {
       var img = item.querySelector('img');
-      var src = img ? img.getAttribute('src') : '';
-      if (!src || !src.trim()) {
-        item.style.display = 'none';
-      } else {
-        galVisible++;
-      }
+      var src = img && img.getAttribute('src');
+      if (!src || !src.trim()) { item.style.display = 'none'; } else { anyPhoto = true; }
     });
-    if (galVisible === 0) {
-      var gs = document.getElementById('gallery-section');
-      if (gs) gs.style.display = 'none';
-    }
-
-    // Testimonial avatars: show first letter of name
-    document.querySelectorAll('.t-avatar[data-name]').forEach(function(el) {
-      var name = (el.getAttribute('data-name') || '').trim();
-      el.textContent = name ? name.charAt(0).toUpperCase() : '?';
-    });
+    if (!anyPhoto) document.getElementById('gallery-section').style.display = 'none';
   </script>
 
 </body>
