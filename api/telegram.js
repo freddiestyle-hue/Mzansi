@@ -396,17 +396,25 @@ async function handleMessage(chatId, message) {
 
 // ─── WEBHOOK HANDLER ──────────────────────────────────────────────────────────
 
+module.exports.config = { api: { bodyParser: false } }
+
 module.exports = async (req, res) => {
   if (req.method !== 'POST') return res.status(405).end()
 
-  let body = ''
-  await new Promise(resolve => {
-    req.on('data', c => body += c)
-    req.on('end', resolve)
-  })
-
   let update
-  try { update = JSON.parse(body) } catch { return res.status(400).end() }
+  try {
+    // Vercel may pre-parse body as object, or leave as string/stream
+    if (req.body && typeof req.body === 'object') {
+      update = req.body
+    } else {
+      let body = ''
+      await new Promise(resolve => {
+        req.on('data', c => body += c)
+        req.on('end', resolve)
+      })
+      update = JSON.parse(body)
+    }
+  } catch { return res.status(400).end() }
 
   const message = update.message || update.edited_message
   if (!message) return res.status(200).end()
