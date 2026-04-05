@@ -1,6 +1,54 @@
 const https = require('https')
 
-const sessions = {}
+const GIST_ID = '6bbb6aab80a506aefa4516c9a2c162cb'
+
+function getSessions() {
+  var GITHUB_TOKEN = process.env.GITHUB_TOKEN
+  return new Promise(function(resolve, reject) {
+    var options = {
+      hostname: 'api.github.com',
+      path: '/gists/' + GIST_ID,
+      method: 'GET',
+      headers: { 'Authorization': 'Bearer ' + GITHUB_TOKEN, 'User-Agent': 'MzansiProsBot' }
+    }
+    https.get(options, function(res) {
+      var data = ''
+      res.on('data', function(c) { data += c })
+      res.on('end', function() {
+        try {
+          var gist = JSON.parse(data)
+          var content = gist.files['sessions.json'].content
+          resolve(JSON.parse(content))
+        } catch(e) { resolve({}) }
+      })
+    }).on('error', function() { resolve({}) })
+  })
+}
+
+function saveSessions(sessions) {
+  var GITHUB_TOKEN = process.env.GITHUB_TOKEN
+  var payload = JSON.stringify({ files: { 'sessions.json': { content: JSON.stringify(sessions) } } })
+  return new Promise(function(resolve) {
+    var options = {
+      hostname: 'api.github.com',
+      path: '/gists/' + GIST_ID,
+      method: 'PATCH',
+      headers: {
+        'Authorization': 'Bearer ' + GITHUB_TOKEN,
+        'Content-Type': 'application/json',
+        'Content-Length': Buffer.byteLength(payload),
+        'User-Agent': 'MzansiProsBot'
+      }
+    }
+    var req = https.request(options, function(res) {
+      res.on('data', function() {})
+      res.on('end', resolve)
+    })
+    req.on('error', resolve)
+    req.write(payload)
+    req.end()
+  })
+}
 
 function sendMessage(chatId, text, extra) {
   const BOT_TOKEN = process.env.TELEGRAM_BOT_TOKEN
@@ -210,7 +258,7 @@ function m(session) {
   return LANG[session.lang] || LANG.en
 }
 
-async function handleMessage(chatId, message) {
+async function handleMessage(chatId, message, sessions) {
   var session = sessions[chatId] || { step: -1, lang: 'en', data: {} }
 
   if (message.text && (message.text === '/start' || message.text === '/restart')) {
@@ -354,7 +402,9 @@ async function handler(req, res) {
   if (!message) return res.status(200).json({ ok: true })
 
   try {
-    await handleMessage(message.chat.id, message)
+    var sessions = await getSessions()
+    await handleMessage(message.chat.id, message, sessions)
+    await saveSessions(sessions)
   } catch(e) {
     console.error('handler error', e)
   }
